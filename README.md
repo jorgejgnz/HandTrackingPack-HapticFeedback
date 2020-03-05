@@ -10,6 +10,7 @@ Unity project with some things I've been working on:
 * VR shopping (POC)
 
 ![Matching technique](https://i.imgur.com/KZMWlEu.gif)
+
 ![Painting with fingers](https://i.imgur.com/SPXv96b.gif)
 
 ## Getting Started
