@@ -28,6 +28,7 @@ This Unity project uses the following:
 * [Unity 2019.3.1f1](https://unity3d.com/es/get-unity/download/archive)
 * [Oculus Integration 13.0](https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022)
 * [VRTK Prefabs Package 1.1.3](https://www.npmjs.com/package/io.extendreality.vrtk.prefabs)
+* [Drawing in VR](https://github.com/MarekMarchlewicz/Painting)
 
 3D Models:
 
