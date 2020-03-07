@@ -1089,11 +1089,11 @@ MonoBehaviour:
   playArea: {fileID: 128671569}
   headset: {fileID: 128671567}
   headsetCamera: {fileID: 128671568}
-  headsetVelocityTracker: {fileID: 128671583}
+  headsetVelocityTracker: {fileID: 0}
   leftController: {fileID: 128671566}
-  leftControllerVelocityTracker: {fileID: 128671582}
+  leftControllerVelocityTracker: {fileID: 0}
   rightController: {fileID: 128671565}
-  rightControllerVelocityTracker: {fileID: 128671572}
+  rightControllerVelocityTracker: {fileID: 0}
 --- !u!114 &128671572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1106,8 +1106,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06287e101a7c024185227cd4d1c239f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedGameObject: {fileID: 128671565}
-  relativeTo: {fileID: 128671569}
 --- !u!114 &128671582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1120,8 +1118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06287e101a7c024185227cd4d1c239f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedGameObject: {fileID: 128671566}
-  relativeTo: {fileID: 128671569}
 --- !u!114 &128671583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1134,8 +1130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06287e101a7c024185227cd4d1c239f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedGameObject: {fileID: 128671567}
-  relativeTo: {fileID: 128671569}
 --- !u!1 &145814689
 GameObject:
   m_ObjectHideFlags: 0
@@ -6191,6 +6185,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 8743713502805583603, guid: 7b67bb1863767364fba8c14a6bb1bd24,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b67bb1863767364fba8c14a6bb1bd24, type: 3}
