@@ -28,6 +28,11 @@ public class MatchingManager : MonoBehaviour
 
     public UnityEvent onActivation, onDeactivation;
 
+    bool PointingGesture_R = false;
+    bool PointingGesture_L = false;
+    bool PitchingGesture_R = false;
+    bool PitchingGesture_L = false;
+
     Vector3 rightIndexTipPos, leftIndexTipPos, tablePos;
     Quaternion tableRot;
 
@@ -56,8 +61,10 @@ public class MatchingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (left.GetFingerIsPinching(HandFinger.Index)
-            && right.GetFingerIsPinching(HandFinger.Index)
+        PitchingGesture_L = left.GetFingerIsPinching(HandFinger.Index);
+        PitchingGesture_R = right.GetFingerIsPinching(HandFinger.Index);
+
+        if (((PitchingGesture_L && PitchingGesture_R) || (PointingGesture_L && PointingGesture_R))
             && canDetect)
         {
             leftIndexTipPos = leftIndexTip.Transform.position;
@@ -92,5 +99,15 @@ public class MatchingManager : MonoBehaviour
         canDetect = !canDetect;
         if (canDetect) onActivation.Invoke();
         else onDeactivation.Invoke();
+    }
+
+    public void SetPointingGestureL(bool b)
+    {
+        PointingGesture_L = b;
+    }
+
+    public void SetPointingGestureR(bool b)
+    {
+        PointingGesture_R = b;
     }
 }
