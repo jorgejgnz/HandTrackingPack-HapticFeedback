@@ -92,10 +92,6 @@ public class Drawing
         Vector3 max = new Vector3(Mathf.Max(allXpos.ToArray()), 1f, Mathf.Max(allZpos.ToArray()));
         Vector3 min = new Vector3(Mathf.Min(allXpos.ToArray()), 0f, Mathf.Min(allZpos.ToArray()));
 
-        //Debugging
-        Debug.Log("(CalculateBounds)" + this.drawingName + " ( " + points.Count + " ) : Centroid:"+ findCentroid(points) + " - Size:" + (max - min));
-
-        // *1000 to be easier to debug
         return new Bounds(findCentroid(points), max - min);
     }
 
@@ -234,8 +230,6 @@ public class DrawingDetector : MonoBehaviour
         }
         debugPanel.text += extra;
 
-        Debug.Log(savedDrawings[0].drawingName + " bounds size: " + savedDrawings[0].bounds.size);
-
     }
 
     public void StartDrawing()
@@ -323,9 +317,6 @@ public class DrawingDetector : MonoBehaviour
         }
         else if (!drawingDetected.Equals(new Drawing()))
         {
-            //Debugging
-            Debug.Log("Detected: " + drawingDetected.drawingName);
-
             sthWasDetected = true;
             drawingNameDetected = drawingDetected.drawingName;
             drawingDetected.onRecognized.Invoke();
@@ -352,7 +343,6 @@ public class DrawingDetector : MonoBehaviour
         for (int i = 0; i < savedDrawings.Count; i++)
         {
             // Check if drawing bounds is close to the desired
-            Debug.Log("---Getting volumeDesired from " + savedDrawings[i].drawingName + " -> " + savedDrawings[i].bounds.size);
             volumeDesired = GetVector3Volume(savedDrawings[i].bounds.size) * 1000f;
             volumeDrawn = GetVector3Volume(d.bounds.size) * 1000f;
             volumeDifference = Mathf.Abs(volumeDesired - volumeDrawn);
@@ -405,7 +395,6 @@ public class DrawingDetector : MonoBehaviour
 
         // If we've found something, we'll return it
         // If we haven't found anything, we return it anyway (newly created object)
-        Debug.Log("Returning best candidate named " + bestCandidate.drawingName);
         return bestCandidate;
     }
 
@@ -423,9 +412,6 @@ public class DrawingDetector : MonoBehaviour
 
     float GetVector3Volume(Vector3 vector)
     {
-        //Debugging
-        Debug.Log("(GetVector3Volume) Calculating volume from " + vector + " - Result: " + vector.x * vector.y * vector.z);
-
         return vector.x * vector.y * vector.z;
     }
 
