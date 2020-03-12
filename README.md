@@ -3,7 +3,7 @@ Unity project with some things I've been working on:
 
 * Matching technique for getting 2D haptic feedback (virtual-real table)
 * Turn your table into a whiteboard (fingers to paint, fist to erase)
-* Detect space-coupled 3D gestures (applied on drawing detection)
+* Detect space-coupled convex 3D gestures (applied on drawing detection)
 * Fast hand gesture recognition
 * Optimized 3D scanned room
 * Virtual touchscreen

@@ -2068,6 +2068,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06287e101a7c024185227cd4d1c239f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trackedGameObject: {fileID: 0}
+  relativeTo: {fileID: 0}
 --- !u!114 &128671582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2080,6 +2082,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06287e101a7c024185227cd4d1c239f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trackedGameObject: {fileID: 0}
+  relativeTo: {fileID: 0}
 --- !u!114 &128671583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2092,6 +2096,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06287e101a7c024185227cd4d1c239f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trackedGameObject: {fileID: 0}
+  relativeTo: {fileID: 0}
 --- !u!1 &132105727
 GameObject:
   m_ObjectHideFlags: 0
@@ -7481,7 +7487,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   paintMode: 0
   paintingTransform: {fileID: 1049393220}
-  raycastLength: 0.04
+  raycastLength: 0.06
   brush: {fileID: 2800000, guid: e4ec1f831ce89fd439a67aa3960f28b9, type: 3}
   spacing: 0.1
 --- !u!1 &596908024
@@ -17038,7 +17044,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1201287508
 Transform:
   m_ObjectHideFlags: 0
@@ -17598,7 +17604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   paintMode: 0
   paintingTransform: {fileID: 236063700}
-  raycastLength: 0.04
+  raycastLength: 0.06
   brush: {fileID: 2800000, guid: e4ec1f831ce89fd439a67aa3960f28b9, type: 3}
   spacing: 0.1
 --- !u!4 &1246397867
@@ -18624,7 +18630,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1339346382}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.0010000467, z: 0.224}
+  m_LocalPosition: {x: 0, y: 0, z: 0.224}
   m_LocalScale: {x: 0.34479842, y: 0.34479842, z: 0.34479842}
   m_Children: []
   m_Father: {fileID: 959402753}
@@ -22565,7 +22571,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1632617344}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.001, z: 0.224}
+  m_LocalPosition: {x: 0, y: 0, z: 0.224}
   m_LocalScale: {x: 0.34479842, y: 0.34479842, z: 0.34479842}
   m_Children: []
   m_Father: {fileID: 959402753}
@@ -24245,13 +24251,13 @@ MonoBehaviour:
   relativeFrom: {fileID: 892288261}
   drawingsContainer: {fileID: 1113018742}
   drawingNameDetected: 
-  showDrawing: 1
+  showDrawing: 0
   prefabPoint: {fileID: 2358479914888350072, guid: 4fe60dc417a78c243bc66602bbb5ed22,
     type: 3}
   debugPanel: {fileID: 1819571952}
   maxDrawnPoints: 500
   drawingName: 
-  savePositionEveryFrames: 10
+  savePositionEveryFrames: 3
 --- !u!1 &1756278630
 GameObject:
   m_ObjectHideFlags: 0
@@ -28812,7 +28818,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2077724508}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.0010000467, z: 0.224}
+  m_LocalPosition: {x: 0, y: 0, z: 0.224}
   m_LocalScale: {x: 0.34479842, y: 0.34479842, z: 0.34479842}
   m_Children: []
   m_Father: {fileID: 959402753}

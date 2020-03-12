@@ -464,12 +464,6 @@ public class CustomInspector_DrawingDetector : Editor
             OnInspectorGUI();
         }
 
-        if (GUILayout.Button("Check drawing and restart"))
-        {
-            myScript.CheckDrawingAndRestart();
-            OnInspectorGUI();
-        }
-
     }
 }
 #endif
