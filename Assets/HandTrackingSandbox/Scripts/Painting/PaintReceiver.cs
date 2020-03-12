@@ -157,4 +157,9 @@ public class PaintReceiver : MonoBehaviour
 
         wasModified = true;
     }
+
+    public void Clean()
+    {
+        Awake();
+    }
 }

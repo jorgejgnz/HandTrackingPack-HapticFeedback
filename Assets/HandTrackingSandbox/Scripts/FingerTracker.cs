@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using static OVRHand;
 
-public class CustomHand : MonoBehaviour
+public class FingerTracker : MonoBehaviour
 {
     public OVRHand hand;
     OVRSkeleton skeleton;
