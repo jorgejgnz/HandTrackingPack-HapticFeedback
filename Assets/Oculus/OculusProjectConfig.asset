@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: OculusProjectConfig
   m_EditorClassIdentifier: 
   targetDeviceTypes: 01000000
-  handTrackingSupport: 2
+  handTrackingSupport: 1
   disableBackups: 0
   enableNSCConfig: 0
   focusAware: 0

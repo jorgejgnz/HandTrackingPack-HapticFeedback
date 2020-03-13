@@ -6,20 +6,32 @@ using static OVRHand;
 
 public class FingerTracker : MonoBehaviour
 {
-    public OVRHand hand;
+    [Header("Hand-Tracking")]
+    public OVRHand trackedHand;
     OVRSkeleton skeleton;
     OVRMeshRenderer mr;
+    SkinnedMeshRenderer smr;
 
+    [Header("Controllers")]
+    public OVRTouchSample.Hand simulatedHand;
+    public Transform simulatedHandIndexTip;
+    public Transform simulatedHandMiddleTip;
+    public Transform simulatedHandRingTip;
+    public Transform simulatedHandPinkyTip;
+    public Transform simulatedHandThumbTip;
+    public Transform simulatedBaseHand;
+
+    [Header("Custom finger tips")]
     public GameObject IndexTipObject;
     public GameObject MiddleTipObject;
     public GameObject RingTipObject;
     public GameObject PinkyTipObject;
     public GameObject ThumbTipObject;
-    public GameObject PalmObject;
+    public GameObject BaseHandObject;
     OVRBone indexTipBone, middleTipBone, ringTipBone, pinkyTipBone, thumbTipBone, handBone;
 
+    [Header("Debugging")]
     public TextMeshPro tmpro;
-
     bool isIndexFingerPinching;
     float ringFingerPinchStrength;
     float  thumbFingerPinchStrength;
@@ -33,23 +45,28 @@ public class FingerTracker : MonoBehaviour
             if (value)
             {
                 // TRACKING IS ENABLED
-                IndexTipObject.SetActive(true);
-                PalmObject.SetActive(true);
                 skeleton.enabled = true;
                 mr.enabled = true;
+                smr.enabled = true;
+
+                simulatedHand.gameObject.SetActive(false);
+
             }
             else{
                 // TRACKING IS DISABLED
-                IndexTipObject.SetActive(false);
-                PalmObject.SetActive(false);
                 skeleton.enabled = false;
                 mr.enabled = false;
+                smr.enabled = false;
+
+                simulatedHand.gameObject.SetActive(true);
+
             }
             _tracking = value;
         }
     }
     public bool _tracking;
 
+    [Header("Smoothing")]
     public bool smoothIndexTip = true;
     public int smoothSteps = 3;
     List<Vector3> lastPositions = new List<Vector3>();
@@ -57,8 +74,9 @@ public class FingerTracker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        skeleton = hand.GetComponent<OVRSkeleton>();
-        mr = hand.GetComponent<OVRMeshRenderer>();
+        skeleton = trackedHand.GetComponent<OVRSkeleton>();
+        mr = trackedHand.GetComponent<OVRMeshRenderer>();
+        smr = trackedHand.GetComponent<SkinnedMeshRenderer>();
 
         foreach (OVRBone bone in skeleton.Bones)
         {
@@ -100,10 +118,10 @@ public class FingerTracker : MonoBehaviour
     void Update()
     {
 
-        if (hand.HandConfidence == TrackingConfidence.High && hand.IsTracked && !tracking) tracking = true;
-        else if ((hand.HandConfidence != TrackingConfidence.High || !hand.IsTracked) && tracking) tracking = false;
+        if (trackedHand.IsTracked && !tracking) tracking = true;
+        else if (!trackedHand.IsTracked && tracking) tracking = false;
 
-        if (tracking)
+        if (trackedHand.HandConfidence == TrackingConfidence.High && tracking)
         {
             IndexTipObject.transform.position = indexTipBone.Transform.position;
             MiddleTipObject.transform.position = middleTipBone.Transform.position;
@@ -117,16 +135,34 @@ public class FingerTracker : MonoBehaviour
             PinkyTipObject.transform.rotation = pinkyTipBone.Transform.rotation;
             ThumbTipObject.transform.rotation = thumbTipBone.Transform.rotation;
 
-            PalmObject.transform.position = handBone.Transform.position;
-            PalmObject.transform.rotation = handBone.Transform.rotation;
+            BaseHandObject.transform.position = handBone.Transform.position;
+            BaseHandObject.transform.rotation = handBone.Transform.rotation;
 
-            isIndexFingerPinching = hand.GetFingerIsPinching(HandFinger.Index);
-            ringFingerPinchStrength = hand.GetFingerPinchStrength(HandFinger.Ring);
-            thumbFingerPinchStrength = hand.GetFingerPinchStrength(HandFinger.Thumb);
+            isIndexFingerPinching = trackedHand.GetFingerIsPinching(HandFinger.Index);
+            ringFingerPinchStrength = trackedHand.GetFingerPinchStrength(HandFinger.Ring);
+            thumbFingerPinchStrength = trackedHand.GetFingerPinchStrength(HandFinger.Thumb);
 
             tmpro.text = "Finger pitching? " + isIndexFingerPinching + "\n";
             tmpro.text += "Ring strength? " + ringFingerPinchStrength + "\n";
             tmpro.text += "Thumb strength? " + thumbFingerPinchStrength + "\n";
+        }else
+        {
+            IndexTipObject.transform.position = simulatedHandIndexTip.position;
+            MiddleTipObject.transform.position = simulatedHandMiddleTip.position;
+            RingTipObject.transform.position = simulatedHandRingTip.position;
+            PinkyTipObject.transform.position = simulatedHandPinkyTip.position;
+            ThumbTipObject.transform.position = simulatedHandThumbTip.position;
+
+            IndexTipObject.transform.rotation = simulatedHandIndexTip.rotation;
+            MiddleTipObject.transform.rotation = simulatedHandMiddleTip.rotation;
+            RingTipObject.transform.rotation = simulatedHandRingTip.rotation;
+            PinkyTipObject.transform.rotation = simulatedHandPinkyTip.rotation;
+            ThumbTipObject.transform.rotation = simulatedHandThumbTip.rotation;
+
+            BaseHandObject.transform.position = simulatedBaseHand.position;
+            BaseHandObject.transform.rotation = simulatedBaseHand.rotation;
+
+            tmpro.text = "Hand is not being tracked!";
         }
 
         if (smoothIndexTip)
