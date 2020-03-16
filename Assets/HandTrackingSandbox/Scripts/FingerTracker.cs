@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using static OVRHand;
 
 public class FingerTracker : MonoBehaviour
@@ -11,6 +12,7 @@ public class FingerTracker : MonoBehaviour
     OVRSkeleton skeleton;
     OVRMeshRenderer mr;
     SkinnedMeshRenderer smr;
+    public Vector3 HandBaseLocalEulerRotOffset_HandTracking;
 
     [Header("Controllers")]
     public OVRTouchSample.Hand simulatedHand;
@@ -20,6 +22,7 @@ public class FingerTracker : MonoBehaviour
     public Transform simulatedHandPinkyTip;
     public Transform simulatedHandThumbTip;
     public Transform simulatedBaseHand;
+    public Vector3 HandBaseLocalEulerRotOffset_Controller;
 
     [Header("Custom finger tips")]
     public GameObject IndexTipObject;
@@ -30,20 +33,26 @@ public class FingerTracker : MonoBehaviour
     public GameObject BaseHandObject;
     OVRBone indexTipBone, middleTipBone, ringTipBone, pinkyTipBone, thumbTipBone, handBone;
 
+    [Header("Events")]
+    public UnityEvent onInputChange;
+    public UnityEvent onHandTracking;
+    public UnityEvent onControllers;
+
     [Header("Debugging")]
     public TextMeshPro tmpro;
-    bool isIndexFingerPinching;
-    float ringFingerPinchStrength;
-    float  thumbFingerPinchStrength;
+    public bool usesPanel = true;
 
     [SerializeField]
     public bool tracking
     {
         get { return _tracking; }
         set {
-        
+
+            if (value != _tracking) onInputChange.Invoke();
+
             if (value)
-            {
+            { 
+
                 // TRACKING IS ENABLED
                 skeleton.enabled = true;
                 mr.enabled = true;
@@ -51,14 +60,19 @@ public class FingerTracker : MonoBehaviour
 
                 simulatedHand.gameObject.SetActive(false);
 
+                onHandTracking.Invoke();
+
             }
             else{
+
                 // TRACKING IS DISABLED
                 skeleton.enabled = false;
                 mr.enabled = false;
                 smr.enabled = false;
 
                 simulatedHand.gameObject.SetActive(true);
+
+                onControllers.Invoke();
 
             }
             _tracking = value;
@@ -136,22 +150,27 @@ public class FingerTracker : MonoBehaviour
             ThumbTipObject.transform.rotation = thumbTipBone.Transform.rotation;
 
             BaseHandObject.transform.position = handBone.Transform.position;
-            BaseHandObject.transform.rotation = handBone.Transform.rotation;
+            BaseHandObject.transform.eulerAngles = handBone.Transform.eulerAngles;
 
-            isIndexFingerPinching = trackedHand.GetFingerIsPinching(HandFinger.Index);
-            ringFingerPinchStrength = trackedHand.GetFingerPinchStrength(HandFinger.Ring);
-            thumbFingerPinchStrength = trackedHand.GetFingerPinchStrength(HandFinger.Thumb);
+            // Apply rotation offset if needed
+            Vector3 rotationAdapted = BaseHandObject.transform.localEulerAngles;
+            rotationAdapted.x = rotationAdapted.x + HandBaseLocalEulerRotOffset_HandTracking.x;
+            rotationAdapted.y = rotationAdapted.y + HandBaseLocalEulerRotOffset_HandTracking.y;
+            rotationAdapted.z = rotationAdapted.z + HandBaseLocalEulerRotOffset_HandTracking.z;
+            BaseHandObject.transform.localEulerAngles = rotationAdapted;
 
-            tmpro.text = "Finger pitching? " + isIndexFingerPinching + "\n";
-            tmpro.text += "Ring strength? " + ringFingerPinchStrength + "\n";
-            tmpro.text += "Thumb strength? " + thumbFingerPinchStrength + "\n";
-        }else
+            if (usesPanel)
+            {
+                tmpro.text = "(" + gameObject.name + ") Rotation offset: " + HandBaseLocalEulerRotOffset_HandTracking;
+            }
+        }
+        else
         {
-            IndexTipObject.transform.position = simulatedHandIndexTip.position;
-            MiddleTipObject.transform.position = simulatedHandMiddleTip.position;
-            RingTipObject.transform.position = simulatedHandRingTip.position;
-            PinkyTipObject.transform.position = simulatedHandPinkyTip.position;
-            ThumbTipObject.transform.position = simulatedHandThumbTip.position;
+            IndexTipObject.transform.position = simulatedHandIndexTip.transform.position;
+            MiddleTipObject.transform.position = simulatedHandMiddleTip.transform.position;
+            RingTipObject.transform.position = simulatedHandRingTip.transform.position;
+            PinkyTipObject.transform.position = simulatedHandPinkyTip.transform.position;
+            ThumbTipObject.transform.position = simulatedHandThumbTip.transform.position;
 
             IndexTipObject.transform.rotation = simulatedHandIndexTip.rotation;
             MiddleTipObject.transform.rotation = simulatedHandMiddleTip.rotation;
@@ -160,9 +179,19 @@ public class FingerTracker : MonoBehaviour
             ThumbTipObject.transform.rotation = simulatedHandThumbTip.rotation;
 
             BaseHandObject.transform.position = simulatedBaseHand.position;
-            BaseHandObject.transform.rotation = simulatedBaseHand.rotation;
+            BaseHandObject.transform.eulerAngles = simulatedBaseHand.eulerAngles;
 
-            tmpro.text = "Hand is not being tracked!";
+            // Apply rotation offset if needed
+            Vector3 rotationAdapted = BaseHandObject.transform.localEulerAngles;
+            rotationAdapted.x = rotationAdapted.x + HandBaseLocalEulerRotOffset_Controller.x;
+            rotationAdapted.y = rotationAdapted.y + HandBaseLocalEulerRotOffset_Controller.y;
+            rotationAdapted.z = rotationAdapted.z + HandBaseLocalEulerRotOffset_Controller.z;
+            BaseHandObject.transform.localEulerAngles = rotationAdapted;
+
+            if (usesPanel)
+            {
+                tmpro.text = "(" + gameObject.name + ") Rotation offset: " + HandBaseLocalEulerRotOffset_Controller;
+            }
         }
 
         if (smoothIndexTip)
@@ -183,4 +212,5 @@ public class FingerTracker : MonoBehaviour
         center = center / gos.Count;
         return center;
     }
+
 }

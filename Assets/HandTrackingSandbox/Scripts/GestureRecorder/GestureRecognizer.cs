@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using System;
+using TMPro;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -47,26 +48,47 @@ public class GestureRecognizer : MonoBehaviour
     bool sthWasDetected;
 
     [Header("Objects")]
-    public GameObject hand;
+    public GameObject BaseHandObject;
     public GameObject[] fingers;
 
     [Header("Debugging")]
     public string gestureNameDetected = "";
+    public TextMeshPro tmpro;
+    public bool usesPanel = false;
+    public GameObject point;
+    List<GameObject> destinationPoints = new List<GameObject>();
+    public bool showDestinationPoints = false;
 
     [Header("Saving")]
     public string gestureName = "";
 
+    private void Awake()
+    {
+        
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         sthWasDetected = false;
         onNothindDetected.Invoke();
+
+        // Debugging
+        if (showDestinationPoints)
+        {
+            for (int i = 0; i < savedGestures[0].positionsPerFinger.Count; i++)
+            {
+                // Initialization of points that will be moved to destinations
+                GameObject g = Instantiate(point, Vector3.zero, Quaternion.identity);
+                destinationPoints.Add(g);
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+
         gestureDetected = Recognize();
 
         gestureNameDetected = gestureDetected.gestureName;
@@ -81,6 +103,19 @@ public class GestureRecognizer : MonoBehaviour
             sthWasDetected = true;
             gestureDetected.onRecognized.Invoke();
         }
+
+        // Debugging
+        if (showDestinationPoints)
+        {
+            for (int i = 0; i < destinationPoints.Count; i++)
+            {
+                destinationPoints[i].transform.position = BaseHandObject.transform.TransformPoint(savedGestures[0].positionsPerFinger[i]);
+            }
+        }
+
+        // Debugging
+        if (usesPanel) tmpro.text = "(" + gameObject.name + ") Theresold: " + theresold;
+
     }
 
     public void SaveAsGesture()
@@ -93,7 +128,7 @@ public class GestureRecognizer : MonoBehaviour
         List<Vector3> positions = new List<Vector3>();
         for (int i = 0; i < fingers.Length; i++)
         {
-            fingerRelativePos = hand.transform.InverseTransformPoint(fingers[i].transform.position);
+            fingerRelativePos = BaseHandObject.transform.InverseTransformPoint(fingers[i].transform.position);
             positions.Add(fingerRelativePos);
         }
 
@@ -122,7 +157,7 @@ public class GestureRecognizer : MonoBehaviour
             // For each finger
             for (int j = 0; j < fingers.Length; j++)
             {
-                fingerRelativePos = hand.transform.InverseTransformPoint(fingers[j].transform.position);
+                fingerRelativePos = BaseHandObject.transform.InverseTransformPoint(fingers[j].transform.position);
 
                 // If at least one finger does not enter the theresold we discard the gesture
                 if (Vector3.Distance(fingerRelativePos, savedGestures[i].positionsPerFinger[j]) > theresold)
@@ -155,6 +190,11 @@ public class GestureRecognizer : MonoBehaviour
         return bestCandidate;
     }
 
+    public void AddTheresold(float value)
+    {
+        theresold += value;
+    }
+
 }
 
 #if UNITY_EDITOR
@@ -172,8 +212,6 @@ public class CustomInspector_GestureRecognizer : Editor
             myScript.SaveAsGesture();
             OnInspectorGUI();
         }
-
-
 
     }
 }
