@@ -18,7 +18,7 @@ Unity project with some things I've been working on:
 
 How can I open this project?
 
-1. ```git clone https://github.com/jormaje/IndustrialTechDemo```
+1. ```git clone https://github.com/jorgejgnz/HandTrackingPack-HapticFeedback```
 2. Open [UnityHub](https://unity3d.com/es/get-unity/download)
 3. Press Add and select the folder where you cloned this repo (Unity 2019.3.1f1)
 
