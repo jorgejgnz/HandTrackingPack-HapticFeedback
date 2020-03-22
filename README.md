@@ -15,6 +15,10 @@ Unity project with some things I've been working on:
 
 ![Painting with fingers](https://i.imgur.com/SPXv96b.gif)
 
+![Input-abstracted interaction with VRTK v4](https://imgur.com/DMuwEaV)
+
+![Gesture-powered interactions](https://imgur.com/qW19hp6)
+
 ## Getting Started
 
 How can I open this project?
