@@ -6,31 +6,33 @@ using UnityEngine.Events;
 using Zinnia.Action;
 using Zinnia.Rule;
 
-[Serializable]
-public class CollisionActionCallBack : UnityEvent<GameObject>
-{ }
-
-
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(Collider))]
-public class CollisionAction : MonoBehaviour
+namespace JorgeJGnz
 {
-    public CollisionActionCallBack onEnter;
-    public CollisionActionCallBack onStay;
-    public CollisionActionCallBack onExit;
+    [Serializable]
+    public class CollisionActionCallBack : UnityEvent<GameObject>
+    { }
 
-    private void OnCollisionEnter(Collision other)
+    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Collider))]
+    public class CollisionAction : MonoBehaviour
     {
-        onEnter.Invoke(other.gameObject);
-    }
+        public CollisionActionCallBack onEnter;
+        public CollisionActionCallBack onStay;
+        public CollisionActionCallBack onExit;
 
-    private void OnCollisionStay(Collision other)
-    {
-        onStay.Invoke(other.gameObject);
-    }
+        private void OnCollisionEnter(Collision other)
+        {
+            onEnter.Invoke(other.gameObject);
+        }
 
-    private void OnCollisionExit(Collision other)
-    {
-        onExit.Invoke(other.gameObject);
+        private void OnCollisionStay(Collision other)
+        {
+            onStay.Invoke(other.gameObject);
+        }
+
+        private void OnCollisionExit(Collision other)
+        {
+            onExit.Invoke(other.gameObject);
+        }
     }
 }

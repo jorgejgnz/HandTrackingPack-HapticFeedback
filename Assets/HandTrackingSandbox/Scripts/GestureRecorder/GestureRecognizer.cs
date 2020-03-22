@@ -32,187 +32,190 @@ public struct Gesture
 
 }
 
-public class GestureRecognizer : MonoBehaviour
+
+namespace JorgeJGnz
 {
-    [Header("Gestures")]
-    [SerializeField]
-    public List<Gesture> savedGestures = new List<Gesture>();
-
-    [Header("Detection")]
-    public float theresold = 1.0f;
-
-    public UnityEvent onNothindDetected;
-
-    [HideInInspector]
-    public Gesture gestureDetected;
-    bool sthWasDetected;
-
-    [Header("Objects")]
-    public GameObject BaseHandObject;
-    public GameObject[] fingers;
-
-    [Header("Debugging")]
-    public string gestureNameDetected = "";
-    public TextMeshPro tmpro;
-    public bool usesPanel = false;
-    public GameObject point;
-    List<GameObject> destinationPoints = new List<GameObject>();
-    public bool showDestinationPoints = false;
-
-    [Header("Saving")]
-    public string gestureName = "";
-
-    private void Awake()
+    public class GestureRecognizer : MonoBehaviour
     {
-        
-    }
+        [Header("Gestures")]
+        [SerializeField]
+        public List<Gesture> savedGestures = new List<Gesture>();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        sthWasDetected = false;
-        onNothindDetected.Invoke();
+        [Header("Detection")]
+        public float theresold = 1.0f;
 
-        // Debugging
-        if (showDestinationPoints)
+        public UnityEvent onNothindDetected;
+
+        [HideInInspector]
+        public Gesture gestureDetected;
+        bool sthWasDetected;
+
+        [Header("Objects")]
+        public GameObject BaseHandObject;
+        public GameObject[] fingers;
+
+        [Header("Debugging")]
+        public string gestureNameDetected = "";
+        public TextMeshPro tmpro;
+        public bool usesPanel = false;
+        public GameObject point;
+        List<GameObject> destinationPoints = new List<GameObject>();
+        public bool showDestinationPoints = false;
+
+        [Header("Saving")]
+        public string gestureName = "";
+
+        private void Awake()
         {
-            for (int i = 0; i < savedGestures[0].positionsPerFinger.Count; i++)
-            {
-                // Initialization of points that will be moved to destinations
-                GameObject g = Instantiate(point, Vector3.zero, Quaternion.identity);
-                destinationPoints.Add(g);
-            }
+
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-        gestureDetected = Recognize();
-
-        gestureNameDetected = gestureDetected.gestureName;
-
-        if (gestureDetected.Equals(new Gesture()) && sthWasDetected)
+        // Start is called before the first frame update
+        void Start()
         {
             sthWasDetected = false;
             onNothindDetected.Invoke();
-        }
-        else if (!gestureDetected.Equals(new Gesture()))
-        {
-            sthWasDetected = true;
-            gestureDetected.onRecognized.Invoke();
-        }
 
-        // Debugging
-        if (showDestinationPoints)
-        {
-            for (int i = 0; i < destinationPoints.Count; i++)
+            // Debugging
+            if (showDestinationPoints)
             {
-                destinationPoints[i].transform.position = BaseHandObject.transform.TransformPoint(savedGestures[0].positionsPerFinger[i]);
+                for (int i = 0; i < savedGestures[0].positionsPerFinger.Count; i++)
+                {
+                    // Initialization of points that will be moved to destinations
+                    GameObject g = Instantiate(point, Vector3.zero, Quaternion.identity);
+                    destinationPoints.Add(g);
+                }
             }
         }
 
-        // Debugging
-        if (usesPanel) tmpro.text = "(" + gameObject.name + ") Theresold: " + theresold;
-
-    }
-
-    public void SaveAsGesture()
-    {
-        Vector3 fingerRelativePos;
-
-        Gesture g = new Gesture();
-        g.gestureName = gestureName;
-
-        List<Vector3> positions = new List<Vector3>();
-        for (int i = 0; i < fingers.Length; i++)
+        // Update is called once per frame
+        void Update()
         {
-            fingerRelativePos = BaseHandObject.transform.InverseTransformPoint(fingers[i].transform.position);
-            positions.Add(fingerRelativePos);
+
+            gestureDetected = Recognize();
+
+            gestureNameDetected = gestureDetected.gestureName;
+
+            if (gestureDetected.Equals(new Gesture()) && sthWasDetected)
+            {
+                sthWasDetected = false;
+                onNothindDetected.Invoke();
+            }
+            else if (!gestureDetected.Equals(new Gesture()))
+            {
+                sthWasDetected = true;
+                gestureDetected.onRecognized.Invoke();
+            }
+
+            // Debugging
+            if (showDestinationPoints)
+            {
+                for (int i = 0; i < destinationPoints.Count; i++)
+                {
+                    destinationPoints[i].transform.position = BaseHandObject.transform.TransformPoint(savedGestures[0].positionsPerFinger[i]);
+                }
+            }
+
+            // Debugging
+            if (usesPanel) tmpro.text = "(" + gameObject.name + ") Theresold: " + theresold;
+
         }
 
-        g.positionsPerFinger = positions;
-
-        savedGestures.Add(g);
-
-    }
-
-    public Gesture Recognize()
-    {
-        Vector3 fingerRelativePos;
-        bool discardGesture = false;
-        float sumDistances;
-        float minSumDistances = Mathf.Infinity;
-        Gesture bestCandidate = new Gesture();
-
-        // For each gesture
-        for (int i = 0; i < savedGestures.Count; i++)
+        public void SaveAsGesture()
         {
-            // If the number of fingers does not match, it returns an error
-            if (fingers.Length != savedGestures[i].positionsPerFinger.Count) throw new Exception("Different number of tracked fingers");
+            Vector3 fingerRelativePos;
 
-            sumDistances = 0f;
+            Gesture g = new Gesture();
+            g.gestureName = gestureName;
 
-            // For each finger
-            for (int j = 0; j < fingers.Length; j++)
+            List<Vector3> positions = new List<Vector3>();
+            for (int i = 0; i < fingers.Length; i++)
             {
-                fingerRelativePos = BaseHandObject.transform.InverseTransformPoint(fingers[j].transform.position);
+                fingerRelativePos = BaseHandObject.transform.InverseTransformPoint(fingers[i].transform.position);
+                positions.Add(fingerRelativePos);
+            }
 
-                // If at least one finger does not enter the theresold we discard the gesture
-                if (Vector3.Distance(fingerRelativePos, savedGestures[i].positionsPerFinger[j]) > theresold)
+            g.positionsPerFinger = positions;
+
+            savedGestures.Add(g);
+
+        }
+
+        public Gesture Recognize()
+        {
+            Vector3 fingerRelativePos;
+            bool discardGesture = false;
+            float sumDistances;
+            float minSumDistances = Mathf.Infinity;
+            Gesture bestCandidate = new Gesture();
+
+            // For each gesture
+            for (int i = 0; i < savedGestures.Count; i++)
+            {
+                // If the number of fingers does not match, it returns an error
+                if (fingers.Length != savedGestures[i].positionsPerFinger.Count) throw new Exception("Different number of tracked fingers");
+
+                sumDistances = 0f;
+
+                // For each finger
+                for (int j = 0; j < fingers.Length; j++)
                 {
-                    discardGesture = true;
-                    break;
+                    fingerRelativePos = BaseHandObject.transform.InverseTransformPoint(fingers[j].transform.position);
+
+                    // If at least one finger does not enter the theresold we discard the gesture
+                    if (Vector3.Distance(fingerRelativePos, savedGestures[i].positionsPerFinger[j]) > theresold)
+                    {
+                        discardGesture = true;
+                        break;
+                    }
+
+                    // If all the fingers entered, then we calculate the total of their distances
+                    sumDistances += Vector3.Distance(fingerRelativePos, savedGestures[i].positionsPerFinger[j]);
                 }
 
-                // If all the fingers entered, then we calculate the total of their distances
-                sumDistances += Vector3.Distance(fingerRelativePos, savedGestures[i].positionsPerFinger[j]);
+                // If we have to discard the gesture, we skip it
+                if (discardGesture)
+                {
+                    discardGesture = false;
+                    continue;
+                }
+
+                // If it is valid and the sum of its distances is less than the existing record, it is replaced because it is a better candidate 
+                if (sumDistances < minSumDistances)
+                {
+                    minSumDistances = sumDistances;
+                    bestCandidate = savedGestures[i];
+                }
             }
 
-            // If we have to discard the gesture, we skip it
-            if (discardGesture)
-            {
-                discardGesture = false;
-                continue;
-            }
-
-            // If it is valid and the sum of its distances is less than the existing record, it is replaced because it is a better candidate 
-            if (sumDistances < minSumDistances)
-            {
-                minSumDistances = sumDistances;
-                bestCandidate = savedGestures[i];
-            }
+            // If we've found something, we'll return it
+            // If we haven't found anything, we return it anyway (newly created object)
+            return bestCandidate;
         }
 
-        // If we've found something, we'll return it
-        // If we haven't found anything, we return it anyway (newly created object)
-        return bestCandidate;
+        public void AddTheresold(float value)
+        {
+            theresold += value;
+        }
     }
-
-    public void AddTheresold(float value)
-    {
-        theresold += value;
-    }
-
-}
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(GestureRecognizer))]
-public class CustomInspector_GestureRecognizer : Editor
-{
-
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(GestureRecognizer))]
+    public class CustomInspector_GestureRecognizer : Editor
     {
-        DrawDefaultInspector();
 
-        GestureRecognizer myScript = (GestureRecognizer)target;
-        if (GUILayout.Button("Save current gesture"))
+        public override void OnInspectorGUI()
         {
-            myScript.SaveAsGesture();
-            OnInspectorGUI();
-        }
+            DrawDefaultInspector();
 
+            GestureRecognizer myScript = (GestureRecognizer)target;
+            if (GUILayout.Button("Save current gesture"))
+            {
+                myScript.SaveAsGesture();
+                OnInspectorGUI();
+            }
+
+        }
     }
-}
 #endif
+}
