@@ -25,4 +25,27 @@ public class Marker : MonoBehaviour
         painter.Initialize(paintReceiver);
         painter.ChangeColour(color);
     }
+
+    public void SetColor(string nameColor)
+    {
+        switch (nameColor)
+        {
+            case "red":
+                color = Color.red;
+                break;
+            case "green":
+                color = Color.green;
+                break;
+            case "blue":
+                color = Color.blue;
+                break;
+        }
+
+        foreach (MeshRenderer renderer in colouredParts)
+        {
+            renderer.material.color = color;
+        }
+
+        painter.ChangeColour(color);
+    }
 }
