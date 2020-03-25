@@ -2102,7 +2102,7 @@ MonoBehaviour:
   playArea: {fileID: 128671569}
   headset: {fileID: 128671567}
   headsetCamera: {fileID: 128671568}
-  headsetVelocityTracker: {fileID: 128671583}
+  headsetVelocityTracker: {fileID: 128671574}
   leftController: {fileID: 128671566}
   leftControllerVelocityTracker: {fileID: 1595751989}
   rightController: {fileID: 128671565}
@@ -2116,12 +2116,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 128671565}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f58a2d47d96802468c6cdf4714c59b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a697310b60482040ade0b7c5bcb4c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   trackedGameObject: {fileID: 128671565}
   relativeTo: {fileID: 128671569}
---- !u!114 &128671582
+--- !u!114 &128671573
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2130,12 +2130,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 128671566}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f58a2d47d96802468c6cdf4714c59b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a697310b60482040ade0b7c5bcb4c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   trackedGameObject: {fileID: 128671566}
   relativeTo: {fileID: 128671569}
---- !u!114 &128671583
+--- !u!114 &128671574
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2144,7 +2144,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 128671567}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f58a2d47d96802468c6cdf4714c59b2, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a697310b60482040ade0b7c5bcb4c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   trackedGameObject: {fileID: 128671567}
@@ -7929,7 +7929,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onControllers.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 128671572}
+      objectReference: {fileID: 0}
     - target: {fileID: 1622683468577773981, guid: 1a782ffa3904b5a4e9a54654a320cd81,
         type: 3}
       propertyPath: m_Name
@@ -10008,7 +10008,7 @@ PrefabInstance:
         type: 3}
       propertyPath: onControllers.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 128671582}
+      objectReference: {fileID: 0}
     - target: {fileID: 7287576699484021224, guid: 2815e0efab13f514a849bba5e4c5f3fa,
         type: 3}
       propertyPath: m_IsTrigger
