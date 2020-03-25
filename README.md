@@ -15,9 +15,9 @@ Unity project with some things I've been working on:
 
 ![Painting with fingers](https://i.imgur.com/SPXv96b.gif)
 
-![Input-abstracted interaction with VRTK v4](https://imgur.com/DMuwEaV)
+![Input-abstracted interaction with VRTK v4](https://imgur.com/DMuwEaV.gif)
 
-![Gesture-powered interactions](https://imgur.com/qW19hp6)
+![Gesture-powered interactions](https://imgur.com/qW19hp6.gif)
 
 ## Getting Started
 
